@@ -14,21 +14,30 @@
     <script src="../static/lib/jquery-min.js" type="text/javascript"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="../static/js/bootstrap.min.js"></script>
+    
   </head>
   <body>
       <div class="container">
       <div class="container">
       <h2>Instructions</h2>
-      <!-- 试玩 -->
       <h3>Please read the following instructions carefully.</h3>
+      <style>
+        .vertical {
+            border-left: 6000px solid black;
+            height: 200px;
+            position: absolute;
+        }
+    </style>
       <hr>
       </div>
+      
+      
       <div class="container" style="column-count: 2">
+        <div class="verticalLine">
       <!-- <h3>Introduction</h3> -->
       <p>
         You will play one of two chefs
-        in a restaurant that serves onion soup, to get 
-        a score of 20 for every soup served. Three onions 
+        in a cooking game that serves onion soup. Three onions 
         have to be put into the pot. Once the soup is
         ready, it has to be served from the pot onto a
         dish and then be delivered at the serving counter. 
@@ -42,36 +51,47 @@
       <br>
       <!-- <hr> -->
 
-      <h3>Movement and interactions</h3>
+      <h3>Keys Used</h3>
       <img src="/static/images/keyboard.png" style="width:160px">
       <p>
         You can move up, down, left, and right using
         the <b>arrow keys</b>, and interact with objects
-        using the <b>spacebar</b>.
+        using the <b>spacebar</b>. You can interact with 
+        the onion-dispenser, dish-dispenser, pot, serving station
+        and any object on the counter.
       </p>
+      <hr style="width: 1px; height: 20px; display: inline-block;">
+     
+    </div>
+      <div class="verticalLine">
+      <li></li>
+      <h3> Interactions in Game </h3>
       <p>
         The following interactions are possible 
         in the game:  
         <ul>
           <li>You can pick up an onion by facing
-          a counter with an onion/onions and pressing <b>spacebar</b>.</li>
+          a counter with an onion/onions and pressing pacebar</li>
           <li>You can pick up a dish by facing
-          a counter with a dish/dishes and pressing <b>spacebar</b>.</li>
+          a counter with a dish/dishes and pressing spacebar.</li>
           <li>If you are holding an onion/dish, facing an empty counter and
-            and press <b>spacebar</b>, you put the onion/dish on the counter.</li>
+            and press spacebar, you put the onion/dish on the counter.</li>
           <li>If you are holding an onion and are facing a pot that is not full (a pot can hold only 3 onions),
-            and press <b>spacebar</b>, you will put the onion in the pot.</li>
+            and press spacebar, you will put the onion in the pot.</li>
             <li>If you are holding a dish and are facing a pot that has soup ready in it,
-            and press <b>spacebar</b>, you will collect the soup onto the dish.</li>
+            and press spacebar, you will collect the soup onto the dish.</li>
             <li>If you are holding a dish with soup and are facing the serving counter,
-              and press <b>spacebar</b>, you will deliver the soup at the serving counter.</li>
+              and press spacebar,, you will deliver the soup at the serving counter.</li>
         </ul> 
       </p>
 
       <!-- <br> -->
       <p>
-        Each empty counter can hold only one object at a time. Each player can hold only one object at a time. 
-        You cannot directly pass any object to your partner. You and your partner <u><b>cannot occupy the same location</b></u>.  
+        Each player can hold only one object at a time. 
+        You cannot directly pass any object to your partner. 
+        You can pass an object to your partner by putting it on the empty counter.
+        Each empty counter can <u>hold only one object at a time.</u>  
+        You and your partner <u>cannot occupy the same location</u>.  
       </p>
       <!-- <br> -->
       <hr>
@@ -80,8 +100,8 @@
       <h3>Cooking</h3>
       <img src="/static/images/soup.png" style="width:250px">
       <p>
-        Once 3 onions are in the pot, the soup begins to cook.
-        After the timer gets to 20, the soup
+        Once 3 onions are put in the pot, the soup begins to cook.
+        After the timer on the pot gets to 20, the soup
         will be ready to be served. To serve the soup,
         bring an empty dish over and interact with the pot.
       </p>
@@ -104,16 +124,18 @@
       <h3>Goal</h3>
       <!-- <img src="/static/images/info-panel.png" style="width:150px"> -->
       <p>
-        Your goal is to seve one soup within 60 seconds. 
-        The current score and time left for you
-        are shown in the upper left of game.
+        A round is successfully completed if you and your partner can serve a single soup. 
+        You will have a total of 60 seconds in each round. The current score and time left 
+        in the round are shown in the upper left of game. 
       </p>
     </div>
+    </div>
+    
     <div class="container">
       <br>
       <hr>
       <br>
-      <h2>Note: After clicking "Start Playing", you will first play in a trial level, where scores will not be recorded and only for getting used to the controls. </h2>
+      <h2>Note: After clicking "Start Playing", you will first play in a trial round, where scores will not be recorded and only for getting used to the controls. </h2>
       <h2>After the trial level, the test officially begins.</h2>
       <br>
       <hr>

@@ -1,5 +1,4 @@
-
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -11,31 +10,53 @@
 
     <title>In Game</title>
     <link rel="Favicon" href="static/favicon.ico" />
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
     <script src="../static/js/jquery-3.6.3.js"></script>
-    <!-- <script src="static/lib/jquery-min.js" type="text/javascript"> -->
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="../static/js/bootstrap.min.js"></script>
+    <style>
+        .likert-scale {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+        .likert-scale .likert-row {
+            display: flex;
+            align-items: center;
+        }
+
+        .likert-row span {
+            margin: 0 10px;
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .likert-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .likert-buttons label {
+            margin: 0 5px;
+        }
+
+        .section-heading {
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
         <h2>Questionnaire</h2>
         <br>
-        <p>Please give 1 to 5 stars on following questions according to your experience in this round.
-
-        </p>
+        <p>Please answer the following questions according to your experience in this round by selecting one option for each question.</p>
         <br>
         <div class="q-list"></div>
         <div>
-            <!-- <a href="./instruction"> -->
-                <div id="submit-btn" style="color: #0056b3; cursor: pointer;">Submit</div>
-            <!-- </a> -->
+            <div id="submit-btn" style="color: #0056b3; cursor: pointer;">Submit</div>
         </div>
         <br>
         <br>
@@ -43,54 +64,100 @@
     </div>
     <script>
         var questionnaire = {
-            // "I am playing well.": 0,
-            "My partner and I worked together to deliver a soup.": 0,
-            "I attempted to work with my partnerto deliver a soup.": 0,
-            "My partner contributed to the successful delivery of a soup.": 0,
-            "My partner responded to my attempts to work with them.": 0,
-            "My partner attempted to work with me": 0
-        }
-        $(function() {
-            // add eventlistener
-            $("#submit-btn").click(submit)
-            getQuestion()
+            "Q1. My partner and I worked together to deliver a soup.": 0,
+            "Q2. My partner contributed to the successful delivery of a soup.": 0,
+            "Q3. I attempted to work with my partner to deliver a soup.": 0,
+            "Q4. My partner responded to my attempts to work with them.": 0,
+            "Q5. My partner attempted to work with me.": 0,
+            "Q6. I responded to their attempts to work with them.": 0
+        };
+
+        $(function () {
+            $("#submit-btn").click(submit);
+            getQuestions();
         });
-        function getQuestion() {
-            var arr = [
-                // "I am playing well.",
-                "My partner and I worked together to deliver a soup.",
-                "I attempted to work with my partnerto deliver a soup.",
-                "My partner contributed to the successful delivery of a soup.",
-                "My partner responded to my attempts to work with them.",
-                "My partner attempted to work with me."
-            ]
-            initQuestion(arr)
+
+        function getQuestions() {
+            var sections = [
+                {
+                    heading: "Team Performance",
+                    questions: [
+                        "Q1. My partner and I worked together to deliver a soup.",
+                        "Q2. My partner contributed to the successful delivery of a soup."
+                    ]
+                },
+                {
+                    heading: "Were you working with your partner?",
+                    questions: [
+                        "Q3. I attempted to work with my partner to deliver a soup.",
+                        "Q4. My partner responded to my attempts to work with them."
+                    ]
+                },
+                {
+                    heading: "Was my partner working with me?",
+                    questions: [
+                        "Q5. My partner attempted to work with me.",
+                        "Q6. I responded to their attempts to work with them."
+                    ]
+                }
+            ];
+            initQuestions(sections);
         }
-        function initQuestion(arr) {
-            for (var i = 0; i < arr.length; i++) {
-                console.log('11', i)
-                var qText = document.createElement("p")
-                qText.innerHTML = arr[i]
-                var qStar = '<div id="rateYo' + i + '" index="'+ i + '"><div/>'
-                var br = document.createElement("br")
-                var hr = document.createElement("hr")
-                $(".q-list").append(qText, qStar, br, hr, br)
-                var index = i
-                $("#rateYo" + i).rateYo({
-                    starWidth: "40px",
-                    numStars: 5,
-                    fullStar: true,
-                    maxValue: 5,
-                    onSet: function (rating, rateYoInstance) {
-                        var nodeId = rateYoInstance.node.id
-                        console.log('ateYoInstance.node.id rating',rating)
-                        var index = $("#"+nodeId+"").attr('index')
-                        questionnaire[arr[index]] = rating
-                    }
+
+        function initQuestions(sections) {
+            sections.forEach(section => {
+                // Add section heading
+                var sectionHeading = document.createElement("h4");
+                sectionHeading.className = "section-heading";
+                sectionHeading.innerHTML = section.heading;
+                $(".q-list").append(sectionHeading);
+
+                // Add questions under the section
+                section.questions.forEach(question => {
+                    var qText = document.createElement("p");
+                    qText.innerHTML = question;
+
+                    var likertScale = `
+                        <div class="likert-scale" data-question="${question}">
+                            <div class="likert-row">
+                                <span>Strongly Disagree</span>
+                                <div class="likert-buttons">
+                                    <label><input type="radio" name="${question}" value="1"></label>
+                                    <label><input type="radio" name="${question}" value="2"></label>
+                                    <label><input type="radio" name="${question}" value="3"></label>
+                                    <label><input type="radio" name="${question}" value="4"></label>
+                                    <label><input type="radio" name="${question}" value="5"></label>
+                                </div>
+                                <span>Strongly Agree</span>
+                            </div>
+                        </div>
+                        <hr>
+                    `;
+                    $(".q-list").append(qText, likertScale);
                 });
-            }
+            });
         }
+
         function submit() {
+            let allAnswered = true; // Flag to track if all questions are answered
+
+            $(".likert-scale").each(function () {
+                var question = $(this).data("question");
+                var selectedValue = $(`input[name="${question}"]:checked`).val();
+                if (selectedValue) {
+                    questionnaire[question] = parseInt(selectedValue);
+                } else {
+                    // If any question is not answered, show alert and set flag to false
+                    alert("Please answer all questions before submitting.");
+                    allAnswered = false;
+                    return false; // Exit the `.each` loop
+                }
+            });
+
+            if (!allAnswered) {
+                return; // Exit the `submit` function if not all questions are answered
+            }
+
             var paramsData = getDomData();
             console.log("in game submit:");
             console.log(paramsData);
@@ -104,45 +171,39 @@
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(paramsData));
             var response = JSON.parse(xhr.response);
-            console.log("response:")
-            console.log(response);
-            saveDataToSession()
-            // sessionStorage.setItem('playerIndexList', JSON.stringify(list));
-            // var playerIndexList = JSON.parse(sessionStorage.getItem('playerIndexList')) || []
-            
-            // route to new game or afterGame
-            console.log('agent_type', agent_type, agent_settings)
+            console.log("response:", response);
+            saveDataToSession();
+
             if (agent_type >= agent_settings.length - 1) {
-                // after game
-                setTimeout(function() {
+                setTimeout(function () {
                     window.location.href = '/html/after_game';
                 }, 10);
-                
             } else {
-                // new game
-                setTimeout(function() {
+                setTimeout(function () {
                     window.location.href = '/';
                 }, 10);
             }
         }
+
         function saveDataToSession() {
-            var inGameList = JSON.parse(sessionStorage.getItem('in_game')) || []
-            inGameList[inGameList.length - 1].questionnaire = questionnaire
-            sessionStorage.setItem('in_game', JSON.stringify(inGameList))
+            var inGameList = JSON.parse(sessionStorage.getItem('in_game')) || [];
+            inGameList[inGameList.length - 1].questionnaire = questionnaire;
+            sessionStorage.setItem('in_game', JSON.stringify(inGameList));
         }
+
         function getDomData() {
-            var userInfo = JSON.parse(sessionStorage.getItem('before_game')) || {}
-            var inGameList = JSON.parse(sessionStorage.getItem('in_game')) || []
-            var currentGame = inGameList[inGameList.length - 1] || {}
+            var userInfo = JSON.parse(sessionStorage.getItem('before_game')) || {};
+            var inGameList = JSON.parse(sessionStorage.getItem('in_game')) || [];
+            var currentGame = inGameList[inGameList.length - 1] || {};
             var params = {
                 name: userInfo.name,
                 phone: userInfo.phone,
                 traj_id: currentGame.traj_id,
                 agent_type: currentGame.agent_type,
                 questionnaire
-            }
-            console.log('params', params)
-            return params
+            };
+            console.log('params:', params);
+            return params;
         }
     </script>
 </body>
