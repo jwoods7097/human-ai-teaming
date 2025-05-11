@@ -6,7 +6,7 @@ import numpy as np
 
 def get_reward_category(reward):
     """Convert reward to the nearest category from the predefined values"""
-    reward_values = [20, 40, 60, 80, 100, 120]
+    reward_values = [0, 20, 40, 60, 80, 100, 120]
     # Find the closest reward value
     closest_reward = min(reward_values, key=lambda x: abs(x - reward))
     return f"reward_{closest_reward}"
