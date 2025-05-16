@@ -22,6 +22,52 @@ def get_layout_from_traj(traj_path):
         print(f"Error reading {traj_path}: {str(e)}")
         return None
 
+def analyze_demographics(questionnaire_data_list):
+    """Analyze demographic information from questionnaire data"""
+    ages = []
+    gender_counts = defaultdict(int)
+    played_counts = defaultdict(int)
+    
+    # Filter participants who have is_played field
+    valid_participants = [data for data in questionnaire_data_list if 'is_played' in data]
+    total_participants = len(valid_participants)
+    
+    for data in valid_participants:
+        # Age
+        try:
+            age = int(data['age'])
+            ages.append(age)
+        except (ValueError, KeyError):
+            pass
+            
+        # Gender
+        if 'gender' in data:
+            gender_counts[data['gender'].lower()] += 1
+            
+        # Played status
+        played_counts[data['is_played'].lower()] += 1
+    
+    print("\nDemographic Information:")
+    print(f"Total number of participants with is_played data: {total_participants}")
+    
+    if ages:
+        print(f"\nAge Statistics:")
+        print(f"Average age: {np.mean(ages):.2f}")
+        print(f"Median age: {np.median(ages):.2f}")
+        print(f"Age range: {min(ages)}-{max(ages)}")
+    
+    if gender_counts:
+        print(f"\nGender Distribution:")
+        for gender, count in gender_counts.items():
+            percentage = (count / total_participants) * 100
+            print(f"{gender.capitalize()}: {count} ({percentage:.1f}%)")
+    
+    if played_counts:
+        print(f"\nPlayed Status:")
+        for status, count in played_counts.items():
+            percentage = (count / total_participants) * 100
+            print(f"{status.upper()}: {count} ({percentage:.1f}%)")
+
 def analyze_responses(questionnaire_data_list):
     # Initialize dictionaries to store responses by layout and participant
     q4_responses = {'counter_circuit': [], 'forced_coordination': []}
@@ -136,6 +182,7 @@ if __name__ == "__main__":
             print(f"Error loading {json_file.name}: {str(e)}")
     
     if questionnaire_data_list:
-        analyze_responses(questionnaire_data_list)
+        analyze_demographics(questionnaire_data_list)
+        #analyze_responses(questionnaire_data_list)
     else:
         print("No valid questionnaire data found.") 
