@@ -70,12 +70,13 @@ def analyze_demographics(questionnaire_data_list):
 
 def analyze_responses(questionnaire_data_list):
     # Initialize dictionaries to store responses by layout and participant
+    q1_responses = {'counter_circuit': [], 'forced_coordination': []}
     q4_responses = {'counter_circuit': [], 'forced_coordination': []}
     q5_responses = {'counter_circuit': [], 'forced_coordination': []}
     
     # Store responses by participant for paired analysis
-    participant_responses = defaultdict(lambda: {'counter_circuit': {'q4': [], 'q5': []}, 
-                                               'forced_coordination': {'q4': [], 'q5': []}})
+    participant_responses = defaultdict(lambda: {'counter_circuit': {'q1': [], 'q4': [], 'q5': []}, 
+                                               'forced_coordination': {'q1': [], 'q4': [], 'q5': []}})
     
     # Process each questionnaire data
     for questionnaire_data in questionnaire_data_list:
@@ -91,16 +92,40 @@ def analyze_responses(questionnaire_data_list):
             if layout not in ['counter_circuit', 'forced_coordination']:
                 continue
                 
-            # Extract Q4 and Q5 responses
+            # Extract Q1, Q4 and Q5 responses
+            q1 = game['questionnaire']['Q1. My partner and I worked together to deliver the soups.']
             q4 = game['questionnaire']['Q4. My partner responded to my attempts to work with them.']
             q5 = game['questionnaire']['Q5. My partner attempted to work with me.']
             
+            q1_responses[layout].append(q1)
             q4_responses[layout].append(q4)
             q5_responses[layout].append(q5)
             
             # Store for paired analysis
+            participant_responses[participant_id][layout]['q1'].append(q1)
             participant_responses[participant_id][layout]['q4'].append(q4)
             participant_responses[participant_id][layout]['q5'].append(q5)
+    
+    # Perform statistical analysis for Q1
+    print("\nAnalysis for Q1 (My partner and I worked together to deliver the soups):")
+    print("Counter Circuit responses:", q1_responses['counter_circuit'])
+    print("Forced Coordination responses:", q1_responses['forced_coordination'])
+    
+    # One-sample t-test against neutral midpoint (3) for counter_circuit
+    if len(q1_responses['counter_circuit']) > 0:
+        t_stat, p_val = stats.ttest_1samp(q1_responses['counter_circuit'], 3)
+        print("\nOne-sample t-test for Counter Circuit (H0: mean = 3):")
+        print(f"t-statistic: {t_stat:.4f}")
+        print(f"p-value: {p_val:.4f}")
+        print(f"Mean: {np.mean(q1_responses['counter_circuit']):.2f}")
+    
+    # One-sample t-test against neutral midpoint (3) for forced_coordination
+    if len(q1_responses['forced_coordination']) > 0:
+        t_stat, p_val = stats.ttest_1samp(q1_responses['forced_coordination'], 3)
+        print("\nOne-sample t-test for Forced Coordination (H0: mean = 3):")
+        print(f"t-statistic: {t_stat:.4f}")
+        print(f"p-value: {p_val:.4f}")
+        print(f"Mean: {np.mean(q1_responses['forced_coordination']):.2f}")
     
     # Perform statistical analysis
     print("\nAnalysis for Q4 (My partner responded to my attempts to work with them):")
@@ -182,7 +207,7 @@ if __name__ == "__main__":
             print(f"Error loading {json_file.name}: {str(e)}")
     
     if questionnaire_data_list:
-        analyze_demographics(questionnaire_data_list)
-        #analyze_responses(questionnaire_data_list)
+        #analyze_demographics(questionnaire_data_list)
+        analyze_responses(questionnaire_data_list)
     else:
         print("No valid questionnaire data found.") 
