@@ -169,7 +169,13 @@ export default class OvercookedSinglePlayerTask {
             this.time_left = Math.round(this.MAX_TIME - time_elapsed);
             this.game.drawTimeLeft(this.time_left);
             this.done = 0
-
+            SCORE_LIMIT = 20
+            // Check for score limit
+            if (this.score == SCORE_LIMIT) {
+                console.log("Score limit reached! Ending the round.");
+                this.close();
+                return;
+            }
             //record data
             this.timestep_callback({
                 state: this.state,
@@ -193,7 +199,7 @@ export default class OvercookedSinglePlayerTask {
             this.activate_response_listener();
 
             //time run out
-            if (this.time_left < 0) {
+            if (this.time_left < 0 || this.score==20) {
                 this.time_left = 0;
                 this.close();
             }
@@ -365,10 +371,10 @@ export default class OvercookedSinglePlayerTask {
         let human_color = 'gray';
         let colorMap = {
           'SP': 'blue',
-          'PBT': 'green',
-          'FCP': 'red',
-          'MEP': 'purple',
-          'COLE': 'orange'
+          'PBT': 'blue',
+          'FCP': 'blue',
+          'MEP': 'blue',
+          'COLE': 'blue'
         }
         var agent_colors = {};
         agent_colors[human_idx] = human_color;

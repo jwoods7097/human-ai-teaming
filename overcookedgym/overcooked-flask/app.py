@@ -48,8 +48,8 @@ ALGO_BASELINES = ["FCP", "MEP", "COLE"]
 cur_algo_idx = -1
 # HUMAN_LIST = ["human"]
 
-ALL_LAYOUTS = ['simple', 'unident_s', 'random1', 'random0', 'random3']
-TEST_LAYOUTS = ['random3', 'unident_s', 'random0']
+ALL_LAYOUTS = ['simple', 'random3']
+TEST_LAYOUTS = ['random3']
 AGENTS = {
     layout: dict() for layout in ALL_LAYOUTS
 }
@@ -186,7 +186,7 @@ def predict(algo):
     else:
         assert False
 
-    return jsonify({"action": a})
+    return jsonify({"action": a})# Add a global variable to track whether the round is over
 
 
 @app.route("/beforegame", methods=["POST"])
