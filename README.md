@@ -1,7 +1,5 @@
 # Interdependencies in Human-agent teams
-This repository is the official implementation of Who is Helping Whom? Analyzing Inter-dependencies to Evaluate Cooperation in Human-AI Teaming. 
-
->📋  Optional: include a graphic explaining your approach/main result, bibtex entry, link to demos, blog posts and tutorials
+This repository is the official implementation of Who is Helping Whom? Analyzing Inter-dependencies to Evaluate Cooperation in Human-AI Teaming. This is forked from https://github.com/liyang619/COLE-Platform.git.
 
 ## Requirements
 
