@@ -521,6 +521,7 @@ def set_agent(algo, agent_idx: int, layout_name: str):
 
 
 if __name__ == "__main__":
+    os.chdir("overcookedgym/overcooked-flask")
     best_bc_model_paths = load_pickle("models/bc_runs/best_bc_model_paths")
 
     print("loading agent models....")

@@ -18,6 +18,8 @@ __pycache__
 node_modules/
 not_used/
 overcookedgym/overcooked-flask/node_module
+overcookedgym/overcooked-flask/models
+overcookedgym/overcooked-flask/data
 yarn.lock
 *.npy
 data.zip
