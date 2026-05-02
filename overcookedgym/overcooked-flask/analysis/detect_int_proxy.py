@@ -396,10 +396,23 @@ def detect_int(data, human_id, algo_id):
                 # print(action)
                 if action['action'] == 'interact':
                     if action['action_type'] == 'put_onion_in_pot_2_onion':
-                        for cell, pre in action['preconditions'].items():
-                            if cell != action['from_pos']:
-                                x,y = cell
-                                action['effects'] = {cell: snapshot_logs_array[t+20][y][x]} 
+                        # This action adds the 3rd onion. The original script
+                        # rewrites the effect to the pot state 20 timesteps later
+                        # so that a later soup pickup can depend on a ready soup.
+                        # With truncated rollouts, or with a 3rd onion added near
+                        # the end of any rollout, t + 20 can exceed the available
+                        # snapshots. In that case there is no future cooked-soup
+                        # snapshot inside this trajectory, so leave the original
+                        # rl_to_pddl effect unchanged.
+                        target_t = t + 20
+
+                        if target_t < len(snapshot_logs_array):
+                            for cell, pre in action['preconditions'].items():
+                                if cell != action['from_pos']:
+                                    x, y = cell
+                                    action['effects'] = {
+                                        cell: snapshot_logs_array[target_t][y][x]
+                                    }
                         
                 # print("For agent at", agent_id, t, action['effects'])
                 for cell, effect_dict_item in action['effects'].items():
