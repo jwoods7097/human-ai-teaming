@@ -1,4 +1,4 @@
-for agent in cole
+for agent in cole mep hsp fcp
 do
     for env in random0 random3
     do
